@@ -5,7 +5,10 @@ export default createStore(function(state, action){
         return {
             number:0, 
             value:0, 
-            data:[]
+            data:[
+                CreatedTime: null,
+                Value:null
+            ]
         }
     }
     if(action.type === 'INCREMENT'){

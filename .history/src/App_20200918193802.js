@@ -44,8 +44,7 @@ class App extends Component {
       type:'TOPIC', 
       value:Number(this.state.msg_v.Value),
       data:[
-        //Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss').,
-        Moment.utc(Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss')).valueOf(),
+        Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss'),
         Number(this.state.msg_v.Value)
       ]
     });
@@ -68,7 +67,7 @@ class App extends Component {
           position:{ align:'right', verticalAlign:'top'},
           relativeTo: 'chart'
         }
-      },
+      }
 
       title: {
         text: 'My chart'
@@ -98,10 +97,10 @@ class App extends Component {
       xAxis: {
         type: 'datetime',
         labels: {
-          format: "{value:%Y-%m-%d %H:%M:%S}"
+          format: "{value:%Y-%m-%d %H:%M:%S.%L}"
         },
         dateTimeLabelFormats: {
-          //millisecond: '%H:%M:%S.%L',
+          millisecond: '%H:%M:%S.%L',
           second: '%H:%M:%S',
           minute: '%H:%M',
           hour: '%H:%M',

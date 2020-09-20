@@ -45,7 +45,7 @@ class App extends Component {
       value:Number(this.state.msg_v.Value),
       data:[
         //Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss').,
-        Moment.utc(Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss')).valueOf(),
+        Moment.utc(Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH24:mm:ss.sss')).valueOf(),
         Number(this.state.msg_v.Value)
       ]
     });
@@ -98,10 +98,10 @@ class App extends Component {
       xAxis: {
         type: 'datetime',
         labels: {
-          format: "{value:%Y-%m-%d %H:%M:%S}"
+          format: "{value:%Y-%m-%d %H:%M:%S.%L}"
         },
         dateTimeLabelFormats: {
-          //millisecond: '%H:%M:%S.%L',
+          millisecond: '%H:%M:%S.%L',
           second: '%H:%M:%S',
           minute: '%H:%M',
           hour: '%H:%M',

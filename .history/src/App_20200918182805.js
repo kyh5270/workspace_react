@@ -44,8 +44,7 @@ class App extends Component {
       type:'TOPIC', 
       value:Number(this.state.msg_v.Value),
       data:[
-        //Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss').,
-        Moment.utc(Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss')).valueOf(),
+        Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:MI:SS'),
         Number(this.state.msg_v.Value)
       ]
     });
@@ -62,14 +61,6 @@ class App extends Component {
     const {CreatedTime, Value} = this.state.msg_v;
     
     const options = {
-      chart: {
-        zoomType:'x',
-        resetZoomButtion:{
-          position:{ align:'right', verticalAlign:'top'},
-          relativeTo: 'chart'
-        }
-      },
-
       title: {
         text: 'My chart'
       },
@@ -96,12 +87,12 @@ class App extends Component {
       },
 
       xAxis: {
-        type: 'datetime',
+        type: 'datetime',   
+        ordinal: false,
         labels: {
-          format: "{value:%Y-%m-%d %H:%M:%S}"
+          format: "{value:%Y-%m-%d}"
         },
         dateTimeLabelFormats: {
-          //millisecond: '%H:%M:%S.%L',
           second: '%H:%M:%S',
           minute: '%H:%M',
           hour: '%H:%M',
@@ -131,8 +122,7 @@ class App extends Component {
         debug={ false }></SockJsClient>
 
         <h2>CreatedTime : {CreatedTime}</h2>
-        <h2>Value : {Value}</h2>
-        <h2>Sum : {this.state.value}</h2>
+        <h2>Value : {this.state.value}</h2>
         <LineChart width={730} height={250} data={this.state.messages}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />

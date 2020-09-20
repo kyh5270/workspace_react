@@ -4,13 +4,12 @@ import './App.css';
 import AddNumberRoot from "./components/AddNumberRoot";
 import DisplayNumberRoot from "./components/DisplayNumberRoot";
 import SockJsClient from "react-stomp";
-// import Fetch from "json-fetch";
-// import randomstring from "randomstring";
+import Fetch from "json-fetch";
+import randomstring from "randomstring";
 import store from "./store";
 import { LineChart, Line, YAxis, XAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import * as Highcharts from 'highcharts';
 import HighchartsReact from "highcharts-react-official";
-import Moment from 'moment';
 
 class App extends Component {
   state = {number:0}
@@ -43,11 +42,9 @@ class App extends Component {
     store.dispatch({
       type:'TOPIC', 
       value:Number(this.state.msg_v.Value),
-      data:[
-        //Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss').,
-        Moment.utc(Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss')).valueOf(),
-        Number(this.state.msg_v.Value)
-      ]
+      data:{
+        this.state.msg_v
+      }
     });
 
     this.setState(prevState => ({
@@ -62,59 +59,12 @@ class App extends Component {
     const {CreatedTime, Value} = this.state.msg_v;
     
     const options = {
-      chart: {
-        zoomType:'x',
-        resetZoomButtion:{
-          position:{ align:'right', verticalAlign:'top'},
-          relativeTo: 'chart'
-        }
-      },
-
       title: {
         text: 'My chart'
       },
-
-      time: {
-        useUTC: false
-      },
-    
-      rangeSelector: {
-        buttons: [{
-          count: 1,
-          type: 'minute',
-          text: '1M'
-        }, {
-          count: 5,
-          type: 'minute',
-          text: '5M'
-        }, {
-          type: 'all',
-          text: 'All'
-        }],
-        inputEnabled: false,
-        selected: 0
-      },
-
-      xAxis: {
-        type: 'datetime',
-        labels: {
-          format: "{value:%Y-%m-%d %H:%M:%S}"
-        },
-        dateTimeLabelFormats: {
-          //millisecond: '%H:%M:%S.%L',
-          second: '%H:%M:%S',
-          minute: '%H:%M',
-          hour: '%H:%M',
-          day: '%e. %b',
-          week: '%e. %b',
-          month: '%b \'%y',
-          year: '%Y'
-        }        
-      },
-
       series: [{
         name: 'Random data',
-        data: this.state.data
+        data: this.state.messages
       }]
     }
     
@@ -131,8 +81,7 @@ class App extends Component {
         debug={ false }></SockJsClient>
 
         <h2>CreatedTime : {CreatedTime}</h2>
-        <h2>Value : {Value}</h2>
-        <h2>Sum : {this.state.value}</h2>
+        <h2>Value : {this.state.value}</h2>
         <LineChart width={730} height={250} data={this.state.messages}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />

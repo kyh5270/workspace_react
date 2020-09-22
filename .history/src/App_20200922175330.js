@@ -44,7 +44,7 @@ class App extends Component {
     Number(msg.CreatedTime.substring(11,13)),Number(msg.CreatedTime.substring(14,16)),Number(msg.CreatedTime.substring(17,19)),
     Number(msg.CreatedTime.substring(20,23)));
 
-    console.log("messages : " + msg);
+    console.log("messages : " + messages);
 
     store.dispatch({
       type:'TOPIC', 

@@ -44,8 +44,6 @@ class App extends Component {
     Number(msg.CreatedTime.substring(11,13)),Number(msg.CreatedTime.substring(14,16)),Number(msg.CreatedTime.substring(17,19)),
     Number(msg.CreatedTime.substring(20,23)));
 
-    console.log("messages : " + msg);
-
     store.dispatch({
       type:'TOPIC', 
       value:Number(this.state.msg_v.Value),
@@ -80,11 +78,11 @@ class App extends Component {
       yAxis:{
         plotLines: [{
           width:3,
-          color:'#FA5858',
+          color:'#01DF01',
           dashStyle:'dashdot',
-          value:700,
+          value:300,
           label:{
-            text:'상한 기준 : ',
+            text:'하한 기준 : ',
             align:'left',
             style:{
               color:'#000000',
@@ -96,15 +94,14 @@ class App extends Component {
           width:3,
           color:'#09A9FF',
           dashStyle:'dashdot',
-          value:500
+          value:400
         },{
           width:3,
-          //color:'#01DF01',
           color:'#FA5858',
           dashStyle:'dashdot',
-          value:300,
+          value:500,
           label:{
-            text:'하한 기준 : ',
+            text:'상한 기준 : ',
             align:'left',
             style:{
               color:'#000000',

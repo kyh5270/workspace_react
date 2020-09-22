@@ -9,7 +9,11 @@ import SockJsClient from "react-stomp";
 import store from "./store";
 import { LineChart, Line, YAxis, XAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import Highcharts from "highcharts/highstock";
+import {
+  HighchartsStockChart, Chart, withHighcharts, Title, AreaSplineSeries, SplineSeries, Navigator, RangeSelector
+} from "highcharts-react-official";
 import HighchartsReact from "highcharts-react-official";
+import Moment from 'moment';
 
 class App extends Component {
   state = {number:0}
@@ -43,8 +47,6 @@ class App extends Component {
     var date = Date.UTC(Number(msg.CreatedTime.substring(0,4)),Number(msg.CreatedTime.substring(5,7))-1,Number(msg.CreatedTime.substring(8,10))-1,
     Number(msg.CreatedTime.substring(11,13)),Number(msg.CreatedTime.substring(14,16)),Number(msg.CreatedTime.substring(17,19)),
     Number(msg.CreatedTime.substring(20,23)));
-
-    console.log("messages : " + msg);
 
     store.dispatch({
       type:'TOPIC', 
@@ -82,45 +84,17 @@ class App extends Component {
           width:3,
           color:'#FA5858',
           dashStyle:'dashdot',
-          value:700,
+          value:500,
           label:{
-            text:'상한 기준 : ',
+            text:'기준 : ',
             align:'left',
             style:{
-              color:'#000000',
+              color:'#FA5858',
               fontSize:'11px'
             },
             x:10
           }
-        },{
-          width:3,
-          color:'#09A9FF',
-          dashStyle:'dashdot',
-          value:500
-        },{
-          width:3,
-          //color:'#01DF01',
-          color:'#FA5858',
-          dashStyle:'dashdot',
-          value:300,
-          label:{
-            text:'하한 기준 : ',
-            align:'left',
-            style:{
-              color:'#000000',
-              fontSize:'11px'
-            },
-            x:10
-          }
-        }],
-        plotBands: [{
-          from: 300,
-          to: 500,
-          color: 'rgba(68, 170, 213, 0.2)',
-          label: {
-              text: 'value range'
-          }
-      }]
+        }]
       },
 
       title: {
@@ -128,25 +102,32 @@ class App extends Component {
       },
     
       rangeSelector: {
-        selected: 5
+        enabled: true,
+        buttons: [{
+          count: 1,
+          type: 'minute',
+          text: '1M'
+        }, {
+          count: 5,
+          type: 'minute',
+          text: '5M'
+        }, {
+          type: 'all',
+          text: 'All'
+        }],
+        inputEnabled: false,
+        selected: 0
       },
 
-      // rangeSelector: {
-      //   enabled: true,
-      //   buttons: [{
-      //     count: 1,
-      //     type: 'minute',
-      //     text: '1M'
-      //   }, {
-      //     count: 5,
-      //     type: 'minute',
-      //     text: '5M'
-      //   }, {
-      //     type: 'all',
-      //     text: 'All'
-      //   }],
-      //   inputEnabled: false,
-      //   selected: 0
+      scrollbar: {
+        liveRedraw: false
+      },
+
+      // navigator: {
+      //   //adaptToUpdatedData: false,
+      //   series: {
+      //       data: this.state.data
+      //   }
       // },
 
       navigator:{ 
@@ -162,7 +143,7 @@ class App extends Component {
             year: '%Y'
           },
           tickWidth: 0,
-          lineWidth: 1,
+          lineWidth: 4,
           gridLineWidth: 1,
           tickPixelInterval: 200,
           labels: {
@@ -174,7 +155,10 @@ class App extends Component {
             y: -4, 
           }
         },
-        height: 20
+        height: 200,
+        series: {
+          data: this.state.data
+        }
         //top:
       },
 
@@ -199,7 +183,7 @@ class App extends Component {
         name: 'Random data',
         data: this.state.data,
         dataGrouping: {
-            enabled: false
+          enabled: false
         }
       }]
     }
@@ -229,9 +213,7 @@ class App extends Component {
             <Line type="monotone" dataKey="Value" stroke="#0095FF" />
         </LineChart>
         <HighchartsReact
-          //highcharts={HighchartsStock}
           highcharts={Highcharts}
-          constructorType={'stockChart'}
           options={options}
         />
       </div>

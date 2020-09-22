@@ -8,8 +8,9 @@ import SockJsClient from "react-stomp";
 // import randomstring from "randomstring";
 import store from "./store";
 import { LineChart, Line, YAxis, XAxis, CartesianGrid, Tooltip, Legend } from "recharts";
-import Highcharts from "highcharts/highstock";
+import * as Highcharts from 'highcharts';
 import HighchartsReact from "highcharts-react-official";
+import Moment from 'moment';
 
 class App extends Component {
   state = {number:0}
@@ -39,20 +40,15 @@ class App extends Component {
   }
 
   onMessageReceive = (msg, topic) => {
-
-    var date = Date.UTC(Number(msg.CreatedTime.substring(0,4)),Number(msg.CreatedTime.substring(5,7))-1,Number(msg.CreatedTime.substring(8,10))-1,
-    Number(msg.CreatedTime.substring(11,13)),Number(msg.CreatedTime.substring(14,16)),Number(msg.CreatedTime.substring(17,19)),
-    Number(msg.CreatedTime.substring(20,23)));
-
-    console.log("messages : " + msg);
-
     store.dispatch({
       type:'TOPIC', 
       value:Number(this.state.msg_v.Value),
       data:[
         //Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss').,
         //Moment.utc(Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss')).valueOf(),
-        date,
+        Date.UTC(Number(this.state.msg_v.CreatedTime.substring(0,4)),Number(this.state.msg_v.CreatedTime.substring(5,7))-1,Number(this.state.msg_v.CreatedTime.substring(8,10))-1,
+        Number(this.state.msg_v.CreatedTime.substring(11,13)),Number(this.state.msg_v.CreatedTime.substring(14,16)),Number(this.state.msg_v.CreatedTime.substring(17,19)),
+        Number(this.state.msg_v.CreatedTime.substring(20,23))),
         Number(this.state.msg_v.Value)
       ]
     });
@@ -77,114 +73,38 @@ class App extends Component {
         }
       },
 
-      yAxis:{
-        plotLines: [{
-          width:3,
-          color:'#FA5858',
-          dashStyle:'dashdot',
-          value:700,
-          label:{
-            text:'상한 기준 : ',
-            align:'left',
-            style:{
-              color:'#000000',
-              fontSize:'11px'
-            },
-            x:10
-          }
-        },{
-          width:3,
-          color:'#09A9FF',
-          dashStyle:'dashdot',
-          value:500
-        },{
-          width:3,
-          //color:'#01DF01',
-          color:'#FA5858',
-          dashStyle:'dashdot',
-          value:300,
-          label:{
-            text:'하한 기준 : ',
-            align:'left',
-            style:{
-              color:'#000000',
-              fontSize:'11px'
-            },
-            x:10
-          }
-        }],
-        plotBands: [{
-          from: 300,
-          to: 500,
-          color: 'rgba(68, 170, 213, 0.2)',
-          label: {
-              text: 'value range'
-          }
-      }]
-      },
-
       title: {
         text: 'My chart'
       },
+
+      time: {
+        useUTC: false
+      },
     
       rangeSelector: {
-        selected: 5
-      },
-
-      // rangeSelector: {
-      //   enabled: true,
-      //   buttons: [{
-      //     count: 1,
-      //     type: 'minute',
-      //     text: '1M'
-      //   }, {
-      //     count: 5,
-      //     type: 'minute',
-      //     text: '5M'
-      //   }, {
-      //     type: 'all',
-      //     text: 'All'
-      //   }],
-      //   inputEnabled: false,
-      //   selected: 0
-      // },
-
-      navigator:{ 
-        xAxis: {
-          dateTimeLabelFormats: {
-            millisecond: '%H:%M:%S.%L',
-            second: '%H:%M:%S',
-            minute: '%H:%M',
-            hour: '%H:%M',
-            day: '%e. %b',
-            week: '%e. %b',
-            month: '%b \'%y',
-            year: '%Y'
-          },
-          tickWidth: 0,
-          lineWidth: 1,
-          gridLineWidth: 1,
-          tickPixelInterval: 200,
-          labels: {
-            align: 'left',
-            style: {
-              color: '#888'
-            },
-            x: 3,
-            y: -4, 
-          }
-        },
-        height: 20
-        //top:
+        buttons: [{
+          count: 1,
+          type: 'minute',
+          text: '1M'
+        }, {
+          count: 5,
+          type: 'minute',
+          text: '5M'
+        }, {
+          type: 'all',
+          text: 'All'
+        }],
+        inputEnabled: false,
+        selected: 0
       },
 
       xAxis: {
         type: 'datetime',
         labels: {
-          format: "{value:%Y-%m-%d %H:%M:%S.%L}"
+          format: "{value:%Y-%m-%d %H:%M:%S}"
         },
         dateTimeLabelFormats: {
-          millisecond: '%H:%M:%S.%L',
+          //millisecond: '%H:%M:%S.%L',
           second: '%H:%M:%S',
           minute: '%H:%M',
           hour: '%H:%M',
@@ -197,10 +117,7 @@ class App extends Component {
 
       series: [{
         name: 'Random data',
-        data: this.state.data,
-        dataGrouping: {
-            enabled: false
-        }
+        data: this.state.data
       }]
     }
     
@@ -229,9 +146,7 @@ class App extends Component {
             <Line type="monotone" dataKey="Value" stroke="#0095FF" />
         </LineChart>
         <HighchartsReact
-          //highcharts={HighchartsStock}
           highcharts={Highcharts}
-          constructorType={'stockChart'}
           options={options}
         />
       </div>

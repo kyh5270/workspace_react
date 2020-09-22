@@ -44,8 +44,6 @@ class App extends Component {
     Number(msg.CreatedTime.substring(11,13)),Number(msg.CreatedTime.substring(14,16)),Number(msg.CreatedTime.substring(17,19)),
     Number(msg.CreatedTime.substring(20,23)));
 
-    console.log("messages : " + msg);
-
     store.dispatch({
       type:'TOPIC', 
       value:Number(this.state.msg_v.Value),
@@ -82,7 +80,7 @@ class App extends Component {
           width:3,
           color:'#FA5858',
           dashStyle:'dashdot',
-          value:700,
+          value:500,
           label:{
             text:'상한 기준 : ',
             align:'left',
@@ -94,13 +92,7 @@ class App extends Component {
           }
         },{
           width:3,
-          color:'#09A9FF',
-          dashStyle:'dashdot',
-          value:500
-        },{
-          width:3,
-          //color:'#01DF01',
-          color:'#FA5858',
+          color:'#01DF01',
           dashStyle:'dashdot',
           value:300,
           label:{
@@ -112,15 +104,7 @@ class App extends Component {
             },
             x:10
           }
-        }],
-        plotBands: [{
-          from: 300,
-          to: 500,
-          color: 'rgba(68, 170, 213, 0.2)',
-          label: {
-              text: 'value range'
-          }
-      }]
+        }]
       },
 
       title: {

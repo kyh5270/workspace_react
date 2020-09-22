@@ -10,6 +10,7 @@ import store from "./store";
 import { LineChart, Line, YAxis, XAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
+import Moment from 'moment';
 
 class App extends Component {
   state = {number:0}
@@ -43,8 +44,6 @@ class App extends Component {
     var date = Date.UTC(Number(msg.CreatedTime.substring(0,4)),Number(msg.CreatedTime.substring(5,7))-1,Number(msg.CreatedTime.substring(8,10))-1,
     Number(msg.CreatedTime.substring(11,13)),Number(msg.CreatedTime.substring(14,16)),Number(msg.CreatedTime.substring(17,19)),
     Number(msg.CreatedTime.substring(20,23)));
-
-    console.log("messages : " + msg);
 
     store.dispatch({
       type:'TOPIC', 
@@ -82,55 +81,23 @@ class App extends Component {
           width:3,
           color:'#FA5858',
           dashStyle:'dashdot',
-          value:700,
+          value:500,
           label:{
-            text:'상한 기준 : ',
+            text:'기준 : ',
             align:'left',
             style:{
-              color:'#000000',
+              color:'#FA5858',
               fontSize:'11px'
             },
             x:10
           }
-        },{
-          width:3,
-          color:'#09A9FF',
-          dashStyle:'dashdot',
-          value:500
-        },{
-          width:3,
-          //color:'#01DF01',
-          color:'#FA5858',
-          dashStyle:'dashdot',
-          value:300,
-          label:{
-            text:'하한 기준 : ',
-            align:'left',
-            style:{
-              color:'#000000',
-              fontSize:'11px'
-            },
-            x:10
-          }
-        }],
-        plotBands: [{
-          from: 300,
-          to: 500,
-          color: 'rgba(68, 170, 213, 0.2)',
-          label: {
-              text: 'value range'
-          }
-      }]
+        }]
       },
 
       title: {
         text: 'My chart'
       },
     
-      rangeSelector: {
-        selected: 5
-      },
-
       // rangeSelector: {
       //   enabled: true,
       //   buttons: [{
@@ -149,34 +116,41 @@ class App extends Component {
       //   selected: 0
       // },
 
-      navigator:{ 
-        xAxis: {
-          dateTimeLabelFormats: {
-            millisecond: '%H:%M:%S.%L',
-            second: '%H:%M:%S',
-            minute: '%H:%M',
-            hour: '%H:%M',
-            day: '%e. %b',
-            week: '%e. %b',
-            month: '%b \'%y',
-            year: '%Y'
-          },
-          tickWidth: 0,
-          lineWidth: 1,
-          gridLineWidth: 1,
-          tickPixelInterval: 200,
-          labels: {
-            align: 'left',
-            style: {
-              color: '#888'
-            },
-            x: 3,
-            y: -4, 
-          }
-        },
-        height: 20
-        //top:
-      },
+      // navigator: {
+      //   //adaptToUpdatedData: false,
+      //   series: {
+      //       data: this.state.data
+      //   }
+      // },
+
+      // navigator:{ 
+      //   xAxis: {
+      //     dateTimeLabelFormats: {
+      //       millisecond: '%H:%M:%S.%L',
+      //       second: '%H:%M:%S',
+      //       minute: '%H:%M',
+      //       hour: '%H:%M',
+      //       day: '%e. %b',
+      //       week: '%e. %b',
+      //       month: '%b \'%y',
+      //       year: '%Y'
+      //     },
+      //     tickWidth: 0,
+      //     lineWidth: 1,
+      //     gridLineWidth: 1,
+      //     tickPixelInterval: 200,
+      //     labels: {
+      //       align: 'left',
+      //       style: {
+      //         color: '#888'
+      //       },
+      //       x: 3,
+      //       y: -4, 
+      //     }
+      //   },
+      //   height: 20
+      //   //top:
+      // },
 
       xAxis: {
         type: 'datetime',
@@ -197,10 +171,7 @@ class App extends Component {
 
       series: [{
         name: 'Random data',
-        data: this.state.data,
-        dataGrouping: {
-            enabled: false
-        }
+        data: this.state.data
       }]
     }
     

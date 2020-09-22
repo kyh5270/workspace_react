@@ -7,7 +7,7 @@ import SockJsClient from "react-stomp";
 // import Fetch from "json-fetch";
 // import randomstring from "randomstring";
 import store from "./store";
-import { LineChart, Line, YAxis, XAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+//import { LineChart, Line, YAxis, XAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 
@@ -64,11 +64,7 @@ class App extends Component {
     Number(msg.CreatedTime.substring(11,13)),Number(msg.CreatedTime.substring(14,16)),Number(msg.CreatedTime.substring(17,19)),
     Number(msg.CreatedTime.substring(20,23)));
 
-    var nowValue = Number(msg.Value);
-
-    console.log("now date : " + date);
-    console.log("now Value : " + nowValue);
-    console.log("now Value : " + this.state.data);
+    console.log("now Value : " + this.state.msg_v.Value);
 
     store.dispatch({
       type:'TOPIC', 
@@ -76,7 +72,7 @@ class App extends Component {
         //Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss').,
         //Moment.utc(Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss')).valueOf(),
         date,
-        Number(msg.Value)
+        Number(this.state.msg_v.Value)
       ],
       createdtime:Number(this.state.msg_v.CreatedTime),
       value:Number(this.state.msg_v.Value),
@@ -262,7 +258,7 @@ class App extends Component {
         <h2>CreatedTime : {CreatedTime}</h2>
         <h2>Value : {Value}</h2>
         <h2>Sum : {this.state.value}</h2>
-        <LineChart width={730} height={250} data={this.state.messages}
+        {/* <LineChart width={730} height={250} data={this.state.messages}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="CreatedTime" />
@@ -270,7 +266,7 @@ class App extends Component {
             <Tooltip />
             <Legend />
             <Line type="monotone" dataKey="Value" stroke="#0095FF" />
-        </LineChart>
+        </LineChart> */}
         <HighchartsReact
           //highcharts={HighchartsStock}
           highcharts={Highcharts}

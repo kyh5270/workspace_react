@@ -64,11 +64,7 @@ class App extends Component {
     Number(msg.CreatedTime.substring(11,13)),Number(msg.CreatedTime.substring(14,16)),Number(msg.CreatedTime.substring(17,19)),
     Number(msg.CreatedTime.substring(20,23)));
 
-    var nowValue = Number(msg.Value);
-
-    console.log("now date : " + date);
-    console.log("now Value : " + nowValue);
-    console.log("now Value : " + this.state.data);
+    console.log("now Value : " + this.state.msg_v.Value);
 
     store.dispatch({
       type:'TOPIC', 
@@ -76,7 +72,7 @@ class App extends Component {
         //Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss').,
         //Moment.utc(Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss')).valueOf(),
         date,
-        Number(msg.Value)
+        Number(this.state.msg_v.Value)
       ],
       createdtime:Number(this.state.msg_v.CreatedTime),
       value:Number(this.state.msg_v.Value),
@@ -219,7 +215,6 @@ class App extends Component {
           value: this.state.value,
           width: 3,
           label: {
-            align: 'right',
             text: 'Now Value'
           }
         }],

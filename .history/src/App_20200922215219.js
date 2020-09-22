@@ -64,11 +64,7 @@ class App extends Component {
     Number(msg.CreatedTime.substring(11,13)),Number(msg.CreatedTime.substring(14,16)),Number(msg.CreatedTime.substring(17,19)),
     Number(msg.CreatedTime.substring(20,23)));
 
-    var nowValue = Number(msg.Value);
-
-    console.log("now date : " + date);
-    console.log("now Value : " + nowValue);
-    console.log("now Value : " + this.state.data);
+    console.log("messages : " + msg);
 
     store.dispatch({
       type:'TOPIC', 
@@ -76,7 +72,7 @@ class App extends Component {
         //Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss').,
         //Moment.utc(Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss')).valueOf(),
         date,
-        Number(msg.Value)
+        Number(this.state.msg_v.Value)
       ],
       createdtime:Number(this.state.msg_v.CreatedTime),
       value:Number(this.state.msg_v.Value),
@@ -157,7 +153,7 @@ class App extends Component {
       },
 
       title: {
-        text: 'SPC Chart'
+        text: 'My chart'
       },
     
       rangeSelector: {
@@ -213,16 +209,6 @@ class App extends Component {
 
       xAxis: {
         type: 'datetime',
-        plotLines: [{
-          dashStyle:'dashdot',
-          color: '#000000',
-          value: this.state.value,
-          width: 3,
-          label: {
-            align: 'right',
-            text: 'Now Value'
-          }
-        }],
         labels: {
           format: "{value:%Y-%m-%d %H:%M:%S.%L}"
         },
@@ -239,7 +225,7 @@ class App extends Component {
       },
 
       series: [{
-        name: 'data',
+        name: 'Random data',
         data: this.state.data,
         dataGrouping: {
             enabled: false
@@ -276,7 +262,7 @@ class App extends Component {
           highcharts={Highcharts}
           constructorType={'stockChart'}
           options={options}
-          containerProps={{ style: { height: "500px", width: "1000px" } }}
+          containerProps={{ style: { height: "250px", width: "730px" } }}
         />
       </div>
     );

@@ -76,7 +76,7 @@ class App extends Component {
         //Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss').,
         //Moment.utc(Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss')).valueOf(),
         date,
-        Number(msg.Value)
+        Number(this.state.msg_v.Value)
       ],
       createdtime:Number(this.state.msg_v.CreatedTime),
       value:Number(this.state.msg_v.Value),

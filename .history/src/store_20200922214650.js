@@ -14,8 +14,6 @@ export default createStore(function(state, action){
 
     if(action.type === 'TOPIC'){
 
-        console.log("state.data : " + state.data);
-        console.log("action.data : " + action.data);
         console.log("state.data.length : " + state.data.length);
 
         if(30>state.data.length){
@@ -50,6 +48,7 @@ export default createStore(function(state, action){
                 xcontrollcl:action.xcontrollcl,
                 rscontrolcl:action.rscontrolcl,
                 rscontrolucl:action.rscontrolucl
+
             }
 
         }        

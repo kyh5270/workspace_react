@@ -7,7 +7,7 @@ import SockJsClient from "react-stomp";
 // import Fetch from "json-fetch";
 // import randomstring from "randomstring";
 import store from "./store";
-import { LineChart, Line, YAxis, XAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+//import { LineChart, Line, YAxis, XAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 
@@ -66,19 +66,19 @@ class App extends Component {
 
     var nowValue = Number(msg.Value);
 
-    console.log("now date : " + date);
-    console.log("now Value : " + nowValue);
-    console.log("now Value : " + this.state.data);
+    console.log("now date : " + this.state.data);
+    console.log("now nowValue : " + nowValue);
+    console.log("now this.state.msg_v.Value : " + this.state.msg_v.Value);
 
     store.dispatch({
       type:'TOPIC', 
       data:[
-        //Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss').,
-        //Moment.utc(Moment(Date(this.state.msg_v.CreatedTime)).format('YYYY-MM-DD HH:mm:ss')).valueOf(),
         date,
         Number(msg.Value)
       ],
-      createdtime:Number(this.state.msg_v.CreatedTime),
+      createdtime:Date.UTC(Number(msg.CreatedTime.substring(0,4)),Number(msg.CreatedTime.substring(5,7))-1,Number(msg.CreatedTime.substring(8,10))-1,
+        Number(msg.CreatedTime.substring(11,13)),Number(msg.CreatedTime.substring(14,16)),Number(msg.CreatedTime.substring(17,19)),
+        Number(msg.CreatedTime.substring(20,23))),
       value:Number(this.state.msg_v.Value),
       rsvalue:Number(this.state.msg_v.RsValue),
       xcontrolcl:Number(this.state.msg_v.XControlCL),
@@ -108,6 +108,35 @@ class App extends Component {
         }
       },
 
+      xAxis: {
+        type: 'datetime',
+        plotLines: [{
+          dashStyle:'dashdot',
+          color: '#000000',
+          value: this.state.createdtime,
+          width: 3,
+          label: {
+            align: 'center',
+            rotation: 360,
+            x: - 60,
+            text: 'Now Value : ' + this.state.value
+          }
+        }],
+        // labels: {
+        //   format: "{value:%Y-%m-%d %H:%M:%S.%L}"
+        // },
+        dateTimeLabelFormats: {
+          millisecond: '%H:%M:%S.%L',
+          second: '%H:%M:%S',
+          minute: '%H:%M',
+          hour: '%H:%M',
+          day: '%e. %b',
+          week: '%e. %b',
+          month: '%b \'%y',
+          year: '%Y'
+        }        
+      },
+
       yAxis:{
         max: this.state.xcontrolucl * 1.5,
         min: this.state.xcontrollcl * 1.5,
@@ -116,6 +145,7 @@ class App extends Component {
           color:'#FA5858',
           dashStyle:'dashdot',
           value:this.state.xcontrolucl,
+          zIndex: 5,
           label:{
             text:'UCL : ' + this.state.xcontrolucl,
             align:'left',
@@ -123,7 +153,6 @@ class App extends Component {
               color:'#000000',
               fontSize:'11px'
             },
-            x:10
           }
         },{
           width:3,
@@ -136,6 +165,7 @@ class App extends Component {
           color:'#FA5858',
           dashStyle:'dashdot',
           value:this.state.xcontrollcl,
+          zIndex: 5,
           label:{
             text:'LCL : ' + this.state.xcontrollcl,
             align:'left',
@@ -143,13 +173,12 @@ class App extends Component {
               color:'#000000',
               fontSize:'11px'
             },
-            x:10
           }
         }],
         plotBands: [{
-          from: this.state.xcontrolcl,
-          to: this.state.xcontroucl,
-          color: 'rgba(68, 170, 213, 0.2)',
+          from: this.state.xcontrollcl,
+          to: this.state.xcontrolucl,
+          color: '#FFFACF',
           label: {
               text: 'value range'
           }
@@ -157,11 +186,13 @@ class App extends Component {
       },
 
       title: {
-        text: 'SPC Chart'
+        text: 'SPC X-Rs ControlChart'
       },
     
       rangeSelector: {
-        selected: 5
+        enabled: true,
+        inputEnabled: false,
+        selected: 0
       },
 
       // rangeSelector: {
@@ -183,6 +214,7 @@ class App extends Component {
       // },
 
       navigator:{ 
+        adaptToUpdatedData: false,
         xAxis: {
           dateTimeLabelFormats: {
             millisecond: '%H:%M:%S.%L',
@@ -208,34 +240,6 @@ class App extends Component {
           }
         },
         height: 20
-        //top:
-      },
-
-      xAxis: {
-        type: 'datetime',
-        plotLines: [{
-          dashStyle:'dashdot',
-          color: '#000000',
-          value: this.state.value,
-          width: 3,
-          label: {
-            align: 'right',
-            text: 'Now Value'
-          }
-        }],
-        labels: {
-          format: "{value:%Y-%m-%d %H:%M:%S.%L}"
-        },
-        dateTimeLabelFormats: {
-          millisecond: '%H:%M:%S.%L',
-          second: '%H:%M:%S',
-          minute: '%H:%M',
-          hour: '%H:%M',
-          day: '%e. %b',
-          week: '%e. %b',
-          month: '%b \'%y',
-          year: '%Y'
-        }        
       },
 
       series: [{
@@ -245,34 +249,36 @@ class App extends Component {
             enabled: false
         }
       }]
+
     }
     
     return (
       <div className="App">
-        <h1>Root</h1>
-        <AddNumberRoot></AddNumberRoot>
-        <DisplayNumberRoot></DisplayNumberRoot>
+        <h1>SPC ControlChart</h1>
+        {/* <AddNumberRoot></AddNumberRoot>
+        <DisplayNumberRoot></DisplayNumberRoot> */}
 
-        <SockJsClient url={ wsSourceUrl } topics={["/topic/test"]}
-        onMessage={ this.onMessageReceive } ref= { (client) => {this.clientRef = client }}
-        onConnect = { () => {this.setState({ clientConnected: true })}}
-        onDisconnect= { () => { this.setState({ clientConnected: false })}}
-        debug={ false }></SockJsClient>
+        <SockJsClient 
+          url={ wsSourceUrl } 
+          topics={["/topic/test"]}
+          onMessage={ this.onMessageReceive } 
+          ref= { (client) => {this.clientRef = client }}
+          onConnect = { () => {this.setState({ clientConnected: true })}}
+          onDisconnect= { () => { this.setState({ clientConnected: false })}}
+          debug={ false }>        
+        </SockJsClient>
 
         <h2>CreatedTime : {CreatedTime}</h2>
         <h2>Value : {Value}</h2>
-        <h2>Sum : {this.state.value}</h2>
-        <LineChart width={730} height={250} data={this.state.messages}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="CreatedTime" />
-            <YAxis dataKey="Value"/>
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="Value" stroke="#0095FF" />
-        </LineChart>
+        {/* <LineChart width={730} height={250} data={this.state.messages} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="CreatedTime" />
+          <YAxis dataKey="Value"/>
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="Value" stroke="#0095FF" />
+        </LineChart> */}
         <HighchartsReact
-          //highcharts={HighchartsStock}
           highcharts={Highcharts}
           constructorType={'stockChart'}
           options={options}

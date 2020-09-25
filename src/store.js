@@ -18,7 +18,7 @@ export default createStore(function(state, action){
         console.log("action.data : " + action.data);
         console.log("state.data.length : " + state.data.length);
 
-        if(30>state.data.length){
+        // if(30>state.data.length){
         
             console.log("10>state.data.length");  
 
@@ -35,24 +35,24 @@ export default createStore(function(state, action){
                 rscontrolucl:action.rscontrolucl
             }
 
-        } else {
+        // } else {
 
-            console.log("else");
+        //     console.log("else");
 
-            return {
-                ...state, 
-                data:[...state.data, action.data].slice(1,31),
-                createdtime:action.createdtime,
-                value:action.value,
-                rsvalue:action.rsvalue,
-                xcontrolcl:action.xcontrolcl,
-                xcontrolucl:action.xcontrolucl,
-                xcontrollcl:action.xcontrollcl,
-                rscontrolcl:action.rscontrolcl,
-                rscontrolucl:action.rscontrolucl
-            }
+        //     return {
+        //         ...state, 
+        //         data:[...state.data, action.data].slice(1,31),
+        //         createdtime:action.createdtime,
+        //         value:action.value,
+        //         rsvalue:action.rsvalue,
+        //         xcontrolcl:action.xcontrolcl,
+        //         xcontrolucl:action.xcontrolucl,
+        //         xcontrollcl:action.xcontrollcl,
+        //         rscontrolcl:action.rscontrolcl,
+        //         rscontrolucl:action.rscontrolucl
+        //     }
 
-        }        
+        // }        
     }
 
     return state;

@@ -262,7 +262,7 @@ class App extends Component {
         <h2>CreatedTime : {CreatedTime}</h2>
         <h2>Value : {Value}</h2>
         <h2>Sum : {this.state.value}</h2>
-        <LineChart width={730} height={250} data={this.state.messages}
+        {/* <LineChart width={730} height={250} data={this.state.messages}
             margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="CreatedTime" />
@@ -270,7 +270,7 @@ class App extends Component {
             <Tooltip />
             <Legend />
             <Line type="monotone" dataKey="Value" stroke="#0095FF" />
-        </LineChart>
+        </LineChart> */}
         <HighchartsReact
           //highcharts={HighchartsStock}
           highcharts={Highcharts}

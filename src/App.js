@@ -268,6 +268,7 @@ class App extends Component {
           debug={ false }>        
         </SockJsClient>
 
+        <h2>Test</h2>
         <h2>CreatedTime : {CreatedTime}</h2>
         <h2>Value : {Value}</h2>
         {/* <LineChart width={730} height={250} data={this.state.messages} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
